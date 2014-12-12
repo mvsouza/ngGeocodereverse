@@ -41,7 +41,7 @@ geocodeReverseModule.service('MapboxService', [ '$http','GeoAPIConstants',
       return self.searchInMatrixForCity(result);
     };
     self.isResultEmpty = function(result){
-      return !result.results || result.results.length==0;
+      return !result.results || result.results.length === 0;
     }
     self.searchInMatrixForCity = function(result){
       for(var i = 0; i < result.results.length; i++){
@@ -87,8 +87,8 @@ geocodeReverseModule.service('GeonamesService', [ '$http','GeoAPIConstants',
     };
   }]);
 
-geocodeReverseModule.service('GeocodeReverseService', [ '$http','MapboxService', 'OpenstreetmapService','GeonamesService','OpenCageService',
-  function($http, MapboxService, OpenstreetmapService, GeonamesService, OpenCageService){
+geocodeReverseModule.service('GeocodeReverseService', ['MapboxService', 'OpenstreetmapService','GeonamesService','OpenCageService',
+  function(MapboxService, OpenstreetmapService, GeonamesService, OpenCageService){
     var self = this;
     self.GetCityMapbox = function(lng, lat){
       var q = MapboxService.FindCityGeoCodeReverse(lng, lat);

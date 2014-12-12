@@ -1,27 +1,42 @@
+
+
 <div class="jumbotron">
 
-    <leaflet markers="markers" center="osloCenter"></leaflet>
-  <h1>'Allo, 'Allo!</h1>
+
+  <h1>Geocode reverse test</h1>
   <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
+    Angular services for Geocode reverse APIs.
   </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
 </div>
-<div ng-repeat="geocode in GeoCodes">
-  <span>{{geocode.City}}</span>
-</div>
+
 <div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
+
+  <h4>Geocode reverse resolution</h4>
   <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
+    The project compare the results of diferent APIs to geocode reverse in oder to find out what city it`s located.
   </p>
 
-  <h4>Angular</h4>
+  <h4>Analyse the results</h4>
   <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
+    The results follow in the list, to see than it's needed to click on the geocode on the title.
   </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+  <leaflet class="col-xs-12" style="height:400px" markers="GeoCodes" center="osloCenter"></leaflet>
 </div>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+ <div ng-repeat="marker in GeoCodes" class="panel panel-default">
+    <div class="panel-heading" role="tab" id="{{'head'+$index}}">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" ng-href="{{'#collapse'+$index}}" aria-expanded="false" aria-controls="{{'collapse'+$index}}">
+          {{marker.lat+"x"+marker.lng}}
+        </a>
+      </h4>
+    </div>
+
+    <div id="{{'collapse'+$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{'head'+$index}}">
+      <div class="panel-body">
+        <pre ng-repeat="result in marker.results">{{result | json}}</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
