@@ -9,4 +9,4 @@
  * Main module of the application.
  */
 angular
-  .module('ngGeocodereverseApp', ['GeocodeReverse',"leaflet-directive"]);
+  .module('ngReverseGeocodeApp', ['ReverseGeocode',"leaflet-directive"]);

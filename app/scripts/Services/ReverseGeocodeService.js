@@ -1,12 +1,12 @@
-var geocodeReverseModule =  angular.module('GeocodeReverse',[]);
-geocodeReverseModule.constant('GeoAPIConstants', {
-    mapBoxId: '',
-    geonameId: '',
-    openCage: ''
+var reverseGeocodeModule =  angular.module('ReverseGeocode',[]);
+reverseGeocodeModule.constant('GeoAPIConstants', {
+    mapBoxId: 'fdorneles.map-15y345pd',
+    geonameId: 'developit',
+    openCage: '3c734d88400ff0ccfa6008e048586673'
   });
 
 
-geocodeReverseModule.service('OpenCageService', [ '$http','GeoAPIConstants',
+reverseGeocodeModule.service('OpenCageService', [ '$http','GeoAPIConstants',
   function($http,GeoAPIConstants){
     var self = this;
     var urls = {};
@@ -24,7 +24,7 @@ geocodeReverseModule.service('OpenCageService', [ '$http','GeoAPIConstants',
   }]);
 
 
-geocodeReverseModule.service('MapboxService', [ '$http','GeoAPIConstants',
+reverseGeocodeModule.service('MapboxService', [ '$http','GeoAPIConstants',
   function($http,GeoAPIConstants){
     var self = this;
     var urls = {};
@@ -54,22 +54,25 @@ geocodeReverseModule.service('MapboxService', [ '$http','GeoAPIConstants',
     }
   }]);
 
-geocodeReverseModule.service('OpenstreetmapService', [ '$http',
+reverseGeocodeModule.service('OpenstreetmapService', [ '$http',
   function($http){
     var self = this;
     var urls = {};
     urls.geocode = "http://nominatim.openstreetmap.org/reverse?format=json&lat={1}&lon={0}";
     self.FindCityGeoCodeReverse = function(lng, lat){
-            return $http.get(urls.geocode.format(lng,lat));
+        var q = $http.get(urls.geocode.format(lng,lat));
+        return q.then(function(r){
+                    return r.data;
+        });
     };
   }]);
 
-geocodeReverseModule.service('GeonamesService', [ '$http','GeoAPIConstants',
+reverseGeocodeModule.service('GeonamesService', [ '$http','GeoAPIConstants',
   function($http,GeoAPIConstants){
     var self = this;
     var urls = {};
-    urls.geocodeReverse = "http://ws.geonames.org/findNearbyPlaceNameJSON?lat={1}&lng={0}&style=full&username={2}"
-    urls.geocodeNeighbour = "http://api.geonames.org/neighbourhoodJSON?lat={1}&lng={0}&username={2}"
+    urls.geocodeReverse = "http://ws.geonames.org/findNearbyPlaceNameJSON?lat={1}&lng={0}&style=full&username={2}";
+    urls.geocodeNeighbour = "http://api.geonames.org/neighbourhoodJSON?lat={1}&lng={0}&username={2}";
 
     self.FindCityGeoCodeReverse = function(lng, lat){
             var q = $http.get(urls.geocodeReverse.format(lng,lat,GeoAPIConstants.geonameId));
@@ -87,7 +90,7 @@ geocodeReverseModule.service('GeonamesService', [ '$http','GeoAPIConstants',
     };
   }]);
 
-geocodeReverseModule.service('GeocodeReverseService', ['MapboxService', 'OpenstreetmapService','GeonamesService','OpenCageService',
+reverseGeocodeModule.service('GeocodeReverseService', ['MapboxService', 'OpenstreetmapService','GeonamesService','OpenCageService',
   function(MapboxService, OpenstreetmapService, GeonamesService, OpenCageService){
     var self = this;
     self.GetCityMapbox = function(lng, lat){

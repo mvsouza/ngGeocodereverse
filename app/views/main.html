@@ -23,7 +23,7 @@
   <leaflet class="col-xs-12" style="height:400px" markers="GeoCodes" center="osloCenter"></leaflet>
 </div>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
- <div ng-repeat="marker in GeoCodes" class="panel panel-default">
+ <div ng-repeat="(key, marker) in GeoCodes" class="panel panel-default" id="{{key}}">
     <div class="panel-heading" role="tab" id="{{'head'+$index}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" ng-href="{{'#collapse'+$index}}" aria-expanded="false" aria-controls="{{'collapse'+$index}}">

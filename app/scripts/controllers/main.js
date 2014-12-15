@@ -7,13 +7,13 @@
  * # MainCtrl
  * Controller of the ngGeocodereverseApp
  */
-angular.module('ngGeocodereverseApp')
+angular.module('ngReverseGeocodeApp')
   .filter('readeble', function () {
     return function (text) {
         if (text !== undefined) return text.replace(/\n/g, '<br />').replace(/\p/g, '&quot;');
     };
   })
-  .controller('MainCtrl', ["$scope", "$q", "GeocodeReverseService",function ($scope, $q, geocodeReverse) {
+  .controller('MainCtrl', ["$scope", "$q", "$anchorScroll", "$location", "GeocodeReverseService",function ($scope, $q, $anchorScroll, $location, geocodeReverse) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -111,7 +111,7 @@ angular.module('ngGeocodereverseApp')
         });
       }
       var promiseMapbox = geocodeReverse.GetCityMapbox(place.lng,place.lat).then(returnResult),
-          promiseOpenstreet = geocodeReverse.GetCityOpenstreetmap(place.lng,place.lat).success(returnResult),
+          promiseOpenstreet = geocodeReverse.GetCityOpenstreetmap(place.lng,place.lat).then(returnResult),
           promiseGeonames = geocodeReverse.GetCityGeonames(place.lng,place.lat).then(returnResult),
           promiseOpencage = geocodeReverse.GetCityOpencage(place.lng,place.lat).then(returnResult);
       var promisesArray = [promiseMapbox,promiseOpenstreet,promiseGeonames,promiseOpencage];
@@ -122,5 +122,11 @@ angular.module('ngGeocodereverseApp')
           $scope.FindCitys(value);
         });
     };
+
+    $scope.$on('leafletDirectiveMarker.click', function (event, args) {
+      $location.hash(args.markerName);
+      $anchorScroll();
+    });
+
     $scope.FindAllCitys();
   }]);
